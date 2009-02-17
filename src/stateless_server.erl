@@ -66,7 +66,7 @@ server_loop(Module) ->
                     From ! {Ma, Mi}
             end;
         Message ->
-            error_logger:report([stateless_server, Module, {unknown_message, Message}])
+            error_logger:warning_report([stateless_server, Module, {unknown_message, Message}])
     end,
     stateless_server:server_loop(Module).
 
