@@ -38,8 +38,8 @@ start(Module) ->
 %% @private
 start_server(Parent, Module) ->
     try Module:init(Module) of
-         ok ->
-             proc_lib:init_ack(Parent, {ok, self()}),
+        ok ->
+            proc_lib:init_ack(Parent, {ok, self()}),
             error_logger:info_report([stateless_server, {server_start, Module}, init_ok]),
             stateless_server:server_loop(Module);
         Response ->
