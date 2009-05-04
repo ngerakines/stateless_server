@@ -5,7 +5,12 @@ all:
 	mkdir -p ./ebin/
 	(cd src; $(MAKE))
 
+test: all
+	(cd t; $(MAKE))
+	prove t/*.t
+
 clean:
+	(cd t; $(MAKE) clean)
 	(cd src; $(MAKE) clean)
 
 package: clean
@@ -15,4 +20,4 @@ package: clean
 
 install:
 	mkdir -p $(prefix)/$(LIBDIR)/stateless_server-$(VERSION)/ebin
-	for i in ebin/*.beam; do install $$i $(prefix)/$(LIBDIR)/stateless_server-$(VERSION)/$$i ; done`
+	for i in ebin/*.beam; do install $$i $(prefix)/$(LIBDIR)/stateless_server-$(VERSION)/$$i ; done
