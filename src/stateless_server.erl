@@ -76,9 +76,4 @@ server_loop(Module) ->
 %%       Response = noreply | any()
 %% @doc Sends a message to a stateless_server process.
 call(To, Message) ->
-    To ! {self(), Message},
-    receive
-        noreply -> noreply;
-        {reply, Reply} -> Reply;
-        Other -> Other
-    end.
+    gen:call(To, '$stateless_server', Message).

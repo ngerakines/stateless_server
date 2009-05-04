@@ -1,5 +1,5 @@
 LIBDIR=`erl -eval 'io:format("~s~n", [code:lib_dir()])' -s init stop -noshell`
-VERSION=0.1
+VERSION=0.1.1
 
 all:
 	mkdir -p ./ebin/
@@ -15,4 +15,4 @@ package: clean
 
 install:
 	mkdir -p $(prefix)/$(LIBDIR)/stateless_server-$(VERSION)/ebin
-	for i in ebin/*.beam; do install $$i $(prefix)/$(LIBDIR)/stateless_server-$(VERSION)/$$i ; done
+	for i in ebin/*.beam; do install $$i $(prefix)/$(LIBDIR)/stateless_server-$(VERSION)/$$i ; done`
