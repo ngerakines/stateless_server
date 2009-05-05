@@ -29,7 +29,7 @@
 behaviour_info(callbacks) -> [{init, 1}, {handle, 2}];
 behaviour_info(_) -> undefined.
 
-%% @spec start(Module) -> pid()
+%% @spec start(Module) -> {ok, pid()}
 %%       Module = atom()
 %% @doc Starts the statless_server process with a given callback module.
 start(Module) ->
