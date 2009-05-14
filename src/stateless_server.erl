@@ -53,17 +53,15 @@ start_server(Parent, Module) ->
 server_loop(Module) ->
     receive
         {'$stateless_server', {From, Mref}, Message} ->
-            try Module:handle(From, Message) of
+            case catch Module:handle(From, Message) of
                 noreply ->
                     gen:reply({From, Mref}, noreply);
                 {reply, Reply} ->
                     gen:reply({From, Mref}, {reply, Reply});
+                {'EXIT', Error} ->
+                    gen:reply({From, Mref}, {'EXIT', Error});
                 Other ->
                     gen:reply({From, Mref}, {unknown, Other})
-            catch
-                Ma:Mi ->
-                    error_logger:error_report([stateless_server, Module, {Ma, Mi}]),
-                    gen:reply({From, Mref}, {Ma, Mi})
             end;
         Message ->
             error_logger:warning_report([stateless_server, Module, {unknown_message, Message}])
@@ -76,9 +74,10 @@ server_loop(Module) ->
 %%       Response = noreply | any()
 %% @doc Sends a message to a stateless_server process.
 call(To, Message) ->
-    {ok, Response} =  gen:call(To, '$stateless_server', Message),
+    {ok, Response} = gen:call(To, '$stateless_server', Message),
     case Response of
         noreply -> noreply;
         {reply, Reply} -> Reply;
+        {'EXIT', Error} -> exit(Error);
         Other -> Other
     end.
